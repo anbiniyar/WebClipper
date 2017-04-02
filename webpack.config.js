@@ -2,11 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-const extractLess = new ExtractTextPlugin({
-    filename: "css/[name].css",
-    disable: process.env.NODE_ENV === "development"
-});
+const WebpackRTLPlugin = require('webpack-rtl-plugin');
 
 let PATHS = {
     SRC: {
@@ -37,9 +33,20 @@ let PATHS = {
     }
 };
 
-let RTL_SUFFIX = "-rtl";
-
 let ARIA_LIB_VERSION = "2.7.1";
+
+const extractLess = new ExtractTextPlugin({
+    filename: "css/clipper.css",
+    disable: process.env.NODE_ENV === "development"
+});
+
+const rtlPlugin = new WebpackRTLPlugin({
+    filename: 'css/clipper-rtl.css',
+    options: {},
+    plugins: [],
+    diffOnly: false,
+    minify: false,
+});
 
 module.exports = {
     entry: {
@@ -94,6 +101,7 @@ module.exports = {
         ]
     },
     plugins: [
-        extractLess
+        extractLess,
+        rtlPlugin,
     ]
 };
